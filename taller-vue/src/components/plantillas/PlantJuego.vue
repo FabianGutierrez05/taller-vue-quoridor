@@ -3,9 +3,9 @@
         <MsgTurno :mensaje="msgTurno"/>
         <TabJuego :tablero="tablero" :jugadores="jugadores"  @CeldaClickeada="MnjClickCelda" />
         <ControlesMov :MurosActuales="MurosActuales" :ModoAccion="ModoAccion" @mover="MnjMov" @PonerMuro="MnjMuroPos" @reiniciar="reiniciarJuego" @cambiarModo="cambiarModoAccion" @MuroOrientacion="PonerOrientacion"/>
-
     </div>
 </template>
+
 <script>
 import MsgTurno from '../organismos/MsgTurno.vue';
 import TabJuego from '../organismos/TabJuego.vue';
@@ -28,8 +28,13 @@ export default{
         };
     },
     computed: {
-        
+        MurosActuales(){
+            return this.jugadores[this.JugActual].Muros;
+        },
     },
+        mounted() { //sin este metodo los atajos de teclado no funcionan
+        this.$el.focus();
+        },
     methods:{
         IniciarTablero(){
             const tablero = [];
@@ -42,13 +47,20 @@ export default{
             }
             return tablero;
         },
+        MnjMov(direccion){
+            if(this.ModoAccion !== 'mover') return;
+
+            const jugador = this
+
+        }
+
     }
 }
 </script>
 <style>
     .PlantJ{
         display: flex;
-  flex-direction: column;
-  align-items: center;
+        flex-direction: column;
+        align-items: center;
     }
 </style>
