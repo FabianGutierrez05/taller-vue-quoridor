@@ -1,19 +1,19 @@
 <script>
-import GameTemplate from '../components/plantillas/GameTemplate.vue';
+import PlantJuego from '../components/plantillas/PlantJuego.vue';
 
 export default {
-  components: {GameTemplate},
+  components: {PlantJuego},
 };
 </script>
 <template>
   <div class="pagina-juego">
-    <GameTemplate/>
+    <PlantJuego/>
   </div>
 </template>
 
 
 <style scoped>
-.game-page{
+.pagina-juego{
   padding: 20px;
 }
 </style>
