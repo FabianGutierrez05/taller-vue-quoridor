@@ -29,6 +29,19 @@ export default{
     },
     computed: {
         
+    },
+    methods:{
+        IniciarTablero(){
+            const tablero = [];
+            for (let i=0; i<9; i++){
+                const fila = [];
+                for(let j=0; j<9; j++){
+                    fila.push({fila: i, columna: j, MuroHori: false, MuroVert: false });
+                }
+                tablero.push(fila);
+            }
+            return tablero;
+        },
     }
 }
 </script>
