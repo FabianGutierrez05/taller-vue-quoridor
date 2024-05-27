@@ -5,6 +5,7 @@ export default {
   components: {PlantJuego},
 };
 </script>
+
 <template>
   <div class="pagina-juego">
     <PlantJuego/>

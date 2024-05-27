@@ -81,14 +81,13 @@ export default{
                 alert('Movimiento no valido');
             }
             },
-            MnjMuroPos(){
-                this.ModoAccion= 'muro';
-            },
-            MovValido(jugador, fila, columna){
-                const filaDif = Math.abs(jugador.fila - fila);
-                const ColDif = Math.abs(jugador.columna - columna);
-                if (filaDif + ColDif !==1) return false;
-
+        MnjMuroPos(){
+            this.ModoAccion= 'muro';
+        },
+        MovValido(jugador, fila, columna){
+            const filaDif = Math.abs(jugador.fila - fila);
+            const ColDif = Math.abs(jugador.columna - columna);
+            if (filaDif + ColDif !==1) return false;
                 for(const otroJug of this.jugadores){
                     if (otroJug !== jugador && otroJug.fila === fila && otroJug.columna === columna){
                         return false;
@@ -104,8 +103,38 @@ export default{
                 }
                 return fila >=0 && fila < 9 && columna >=0 && columna <9;
             },
-            
-
+        TeclasFlechas(event){
+            const MapaKey = {
+                FlechaArriba: 'arriba',
+                FlechaAbajo: 'abajo',
+                FlechaIzq: 'izq',
+                FlechaDer: 'der',
+            };
+            const direccion = MapaKey[event.key];
+            if(direccion && this.ModoAccion === 'mover'){
+                this.MnjMov(direcion);
+            }
+        },
+        VerifGanador(jugador){
+            return jugador.fila === jugador.MetaFila;
+        },
+        cambiarJug(){
+            this.JugActual=this.JugActual===0?1:0;
+            this.msgTurno= `Turno del jugador ${this.currentPlayer + 1}`;
+            this.ModoAccion='mover';
+        },  
+        reiniciarJuego(){
+           this.tablero = this.IniciarTablero();
+           this.jugadores = [
+            {id:1, fila:0, columna:4, Muros:10, MetaFila:8},
+            {id:2, fila:8, columna:4, Muros:10, MetaFila:0}
+            ],
+            this.JugActual= 0;
+            this.Ganador=null;
+            this.msgTurno= 'Turno del jugador 1';
+            this.ModoAccion= 'mover';
+            this.OrientacionMuro= 'horizontal';
+        },
 
         
         }

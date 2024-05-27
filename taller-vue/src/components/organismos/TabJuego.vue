@@ -15,8 +15,8 @@ export default {
 </script>
 
 <template>
-    <div class="game-board">
-      <BoardRow
+    <div class="Tablero">
+      <FilaTablero
         v-for="(fila, filaIndex) in tablero"
         :key="filaIndex"
         :fila="fila"
