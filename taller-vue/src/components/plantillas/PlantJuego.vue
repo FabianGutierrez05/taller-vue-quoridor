@@ -135,6 +135,62 @@ export default{
             this.ModoAccion= 'mover';
             this.OrientacionMuro= 'horizontal';
         },
+        MuroValido(fila, columna, orientacion){
+                if (orientacion === 'horizontal'){
+                    if(
+                        columna >= 8 || this.tablero[fila][columna].MuroHori || this.tablero[fila][columna + 1].MuroHori
+                    ){
+                        return false;
+                    }
+                    if(
+                        (fila > 0 && this.tablero[fila - 1][columna].MuroVert && this.tablero[fila - 1][col +1].MuroVert) || (fila < 8 && this.tablero[fila + 1][columna].MuroVert && this.tablero[fila + 1][col +1].MuroVert)
+                    ) {
+                        return false;
+                    }
+                } else {
+                    if ( fila >=8 || this.tablero[fila][columna].MuroVert || this.tablero[fila +1][columna].MuroVert)   
+                    {
+                        return false;
+                    }  
+                    if (
+                        (columna > 0 && this.tablero[fila][columna-1].MuroHori && this.tablero[fila + 1][col - 1].MuroHori) || (columna < 8 && this.tablero[fila][columna+1].MuroHori && this.tablero[fila + 1][col + 1].MuroHori)
+                    )   {
+                        return false;
+                    }       
+                }
+                return false;
+            },
+            CaminoDisponible(jugador){
+                const direcciones = [
+                    {fila:-1, columna: 0},
+                    {fila: 1, columna: 0},
+                    {fila: 0, columna:-1},
+                    {fila: 0, columna: 1},
+                ];
+
+                const visitado = Array.from({length: 9}, () => Array(9).fill(false));
+                const cola = [{fila: jugador.fila, columna: jugador.columna}];
+                visitado[jugador.fila][jugador.columna] = true;
+
+                while(cola.length > 0){
+                    const {fila, columna} = cola.shift();
+                    if (fila === jugador.MetaFila) return true;
+
+                    for(const direccion of direcciones) {
+                        const nuevaFila = fila + direccion.fila;
+                        const nuevaCol = columna + direccion.columna;
+
+                        if(
+                            nuevaFila >= 0 && nuevaFila < 9 && nuevaCol >= 0 && nuevaCol < 9 &&
+                            !visitado[nuevaFila][nuevaCol] && this.MovValido({fila, columna}, nuevaFila, nuevaCol)
+                        ) {
+                            visitado[nuevaFila][nuevaCol] = true;
+                            cola.push({ fila: nuevaFila, columna: nuevaCol});
+                        }
+                    }
+                }
+                return false;
+            },
 
         
         }
