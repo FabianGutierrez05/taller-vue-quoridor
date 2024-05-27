@@ -17,7 +17,7 @@
                 return J2.fila === fila && J2.columna === columna;
             },
             MnjClickCelda({fila, columna}) {
-                this.$emit('CeldaClickeada', {fila: this.fila, columna: this.columna})
+                this.$emit('CeldaClickeada', {fila, columna})
             },
         },
     };
@@ -34,7 +34,7 @@
         :Jugador2="Jugador2(celda.fila, celda.columna)"
         :MuroVert="celda.MuroVert"
         :MuroHori="celda.MuroHori"
-        @cellClicked="handleCellClick"
+        @CeldaClickeada="MnjClickCelda"
         />
     </div>
 </template>
