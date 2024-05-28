@@ -29,6 +29,6 @@ export default {
 .Tablero{
     display: flex;
     flex-direction: column;
-    background-color:  #88E8F2;
+    
 }
 </style>

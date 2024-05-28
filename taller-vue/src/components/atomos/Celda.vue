@@ -28,25 +28,25 @@ export default{
 .celda{
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 1px solid rgb(255, 235, 235);
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;   
 }
 .celda-J1{
-    background-color: pink;
+    background-color: rgb(117, 17, 124);
     border-radius: 20%;
 }
 .celda-J2{
-    background-color: purple;
+    background-color: rgb(20, 159, 169);
     border-radius: 20%;
 }
 .Hmuro::before {
   content: '';
   width: 100%;
   height: 5px;
-  background-color: rgb(52, 0, 136);
+  background-color: rgb(184, 141, 255);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -56,7 +56,7 @@ export default{
     content: '';
     width: 5px;
     height: 100%;
-    background-color:rgb(52, 0, 136);
+    background-color:rgb(184, 141, 255);
     position: absolute;
     right: 0;
     top: 0;

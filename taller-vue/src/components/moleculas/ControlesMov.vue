@@ -15,7 +15,7 @@ export default{
         <div v-if="ModoAccion === 'mover'"></div>
         <div v-if="ModoAccion === 'muro'">
             <p>Selecciona la orientacion del muro:</p>
-            <Boton @click="$emit('setOrientacionMuro', 'horizontal    ')" class="btn-primario">Horizontal</Boton>
+            <Boton @click="$emit('setOrientacionMuro', 'horizontal')" class="btn-primario">Horizontal</Boton>
             <Boton @click="$emit('setOrientacionMuro', 'vertical')" class="btn-primario">Vertical</Boton>
             <p>Muros restantes: {{ MurosActuales }}</p>
         </div>
@@ -33,7 +33,7 @@ p{
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #F29544;
+  opacity: 1;
 }
 .btn{
     display: flex;

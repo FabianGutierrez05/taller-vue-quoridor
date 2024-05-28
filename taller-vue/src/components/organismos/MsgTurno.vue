@@ -10,12 +10,9 @@
 </template>
 <style>
 .msj{
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    background-color: #BF2C2C;
-    border: 10px;
-    color: #fff;
-    border-color: #23518C;
-    border-radius: 10%;
+    background-color: #bf8e2c;
+  color: #fff;
+  border-radius: 10%;
+  border: #88E8F2;  
 }
 </style>

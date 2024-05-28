@@ -16,4 +16,7 @@ export default {
 .pagina-juego{
   padding: 20px;
 }
+html{
+  background-color:#F29544 ;
+}
 </style>

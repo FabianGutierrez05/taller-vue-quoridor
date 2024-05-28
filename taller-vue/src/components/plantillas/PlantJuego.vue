@@ -272,5 +272,9 @@ export default {
     flex-direction: column;
     align-items: center;
     background-color: #F29544;
+    background-image: url(https://moewalls.com/wp-content/uploads/2023/10/neon-waterfall-vaporwave-thumb.jpg);
+}
+html{
+    background-color: #F29544;
 }
 </style>
