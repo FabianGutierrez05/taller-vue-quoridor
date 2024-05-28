@@ -9,6 +9,7 @@ export default{
 
 <template>
     <div class="ControlMov">
+        <button @click="$emit('reiniciar')">Reiniciar</button>
         <button @click="$emit('ActivModoAccion')">{{ ModoAccion === 'mover' ? 'Cambiar a Poner  Muro' : 'Cambiar a Moverse'}}</button>
         <div v-if="ModoAccion === 'mover'"></div>
         <div v-if="ModoAccion === 'muro'">
