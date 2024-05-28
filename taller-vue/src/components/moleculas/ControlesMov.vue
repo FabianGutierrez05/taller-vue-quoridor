@@ -11,6 +11,7 @@ export default{
     <div class="ControlMov">
         <button @click="$emit('ActivModoAccion')">{{ ModoAccion === 'mover' ? 'Cambiar a Poner  Muro' : 'Cambiar a Moverse'}}</button>
         <div v-if="ModoAccion === 'muro'">
+            <button @click="$emit('PonerMuro')">Poner Muro</button>
             <p>Selecciona la orientacion del muro:</p>
             <button @click="$emit('setOrientacionMuro', 'horizontal')">Horizontal</button>
             <button @click="$emit('setOrientacionMuro', 'vertical')">Vertical</button>

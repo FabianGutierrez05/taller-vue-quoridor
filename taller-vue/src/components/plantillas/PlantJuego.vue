@@ -1,8 +1,8 @@
 <template>
     <div class="PlantJ" @keydown="TeclasFlechas" tabindex="0">
-        <MsgTurno :mensaje="msgTurno"/>
-        <TabJuego :tablero="tablero" :jugadores="jugadores"  @CeldaClickeada="MnjClickCelda" />
-        <ControlesMov :MurosActuales="MurosActuales" :ModoAccion="ModoAccion" @mover="MnjMov" @PonerMuro="MnjMuroPos" @reiniciar="reiniciarJuego" @cambiarModo="cambiarModoAccion" @MuroOrientacion="PonerOrientacion"/>
+        <MsgTurno :mensaje="msgTurno" />
+        <TabJuego :tablero="tablero" :jugadores="jugadores" @CeldaClickeada="MnjClickCelda" />
+        <ControlesMov :MurosActuales="MurosActuales" :ModoAccion="ModoAccion" @mover="MnjMov" @PonerMuro="MnjMuroPos" @reiniciar="reiniciarJuego" @cambiarModo="cambiarModoAccion" @MuroOrientacion="setOrientacionMuro" />
     </div>
 </template>
 
@@ -11,51 +11,52 @@ import MsgTurno from '../organismos/MsgTurno.vue';
 import TabJuego from '../organismos/TabJuego.vue';
 import ControlesMov from '../moleculas/ControlesMov.vue';
 
-export default{
-    components: {MsgTurno, TabJuego, ControlesMov},
-    data()  {
+export default {
+    components: { MsgTurno, TabJuego, ControlesMov },
+    data() {
         return {
             tablero: this.IniciarTablero(),
             jugadores: [
-                {id:1, fila:0, columna:4, Muros:10, MetaFila:8},
-                {id:2, fila:8, columna:4, Muros:10, MetaFila:0}
+                { id: 1, fila: 0, columna: 4, Muros: 10, MetaFila: 8 },
+                { id: 2, fila: 8, columna: 4, Muros: 10, MetaFila: 0 }
             ],
             JugActual: 0,
             Ganador: null,
             msgTurno: 'Turno del jugador 1',
             ModoAccion: 'mover',
             OrientacionMuro: 'horizontal',
+            LugarMuro: false,
         };
     },
     computed: {
-        MurosActuales(){
+        MurosActuales() {
             return this.jugadores[this.JugActual].Muros;
         },
     },
-        mounted() { //sin este metodo los atajos de teclado no funcionan
+    mounted() {
         this.$el.focus();
-        },
-    methods:{
-        IniciarTablero(){
+    },
+    methods: {
+        IniciarTablero() {
             const tablero = [];
-            for (let i=0; i<9; i++){
+            for (let i = 0; i < 9; i++) {
                 const fila = [];
-                for(let j=0; j<9; j++){
-                    fila.push({fila: i, columna: j, MuroHori: false, MuroVert: false });
+                for (let j = 0; j < 9; j++) {
+                    fila.push({ fila: i, columna: j, MuroHori: false, MuroVert: false });
                 }
                 tablero.push(fila);
             }
             return tablero;
         },
-        MnjMov(direccion){
-            if (this.ModoAccion!='mover') return;
+        MnjMov(direccion) {
+            if (this.ModoAccion != 'mover') return;
 
-            const jugador=this.jugadores[this.JugActual];
+            const jugador = this.jugadores[this.JugActual];
             let nuevaFila = jugador.fila;
             let nuevaCol = jugador.columna;
 
-            switch(direccion){
-                case 'up' :
+            switch (direccion) {
+                case 'up':
                     nuevaFila -= 1;
                     break;
                 case 'down':
@@ -68,140 +69,205 @@ export default{
                     nuevaCol += 1;
                     break;
             }
-            if(this.MovValido(jugador, nuevaFila, nuevaCol)){       
-                jugador.fila=nuevaFila;
-                jugador.columna=nuevaCol;
-                if(this.VerifGanador(jugador)){
-                    this.Ganador= jugador.id;
+            if (this.MovValido(jugador, nuevaFila, nuevaCol)) {
+                jugador.fila = nuevaFila;
+                jugador.columna = nuevaCol;
+                if (this.VerifGanador(jugador)) {
+                    this.Ganador = jugador.id;
                     this.msgTurno = `¡El jugador ${jugador.id} ha ganado!`;
-                }else {
+                } else {
                     this.cambiarJug();
                 }
-            }else{
-                alert('Movimiento no valido');
+            } else {
+                alert('Movimiento no válido');
             }
-            },
-        MnjMuroPos(){
-            this.ModoAccion= 'muro';
         },
-        MovValido(jugador, fila, columna){
+        MnjMuroPos() {
+            this.ModoAccion = 'muro';
+        },
+        MovValido(jugador, fila, columna) {
+            console.log('MovValido called with:', { jugador, fila, columna });
+
+            if (!this.tablero[jugador.fila] || !this.tablero[jugador.fila][jugador.columna]) {
+            console.error('Invalid position for jugador:', jugador.fila, jugador.columna);
+            return false;
+            }
+
+            if (!this.tablero[fila] || !this.tablero[fila][columna]) {
+                console.error('Invalid target position:', fila, columna);
+                return false;
+            }
+
             const filaDif = Math.abs(jugador.fila - fila);
             const ColDif = Math.abs(jugador.columna - columna);
-            if (filaDif + ColDif !==1) return false;
-                for(const otroJug of this.jugadores){
-                    if (otroJug !== jugador && otroJug.fila === fila && otroJug.columna === columna){
-                        return false;
-                    }
+
+            if (filaDif + ColDif !== 1) return false;
+
+            for (const otroJug of this.jugadores) {
+                if (otroJug !== jugador && otroJug.fila === fila && otroJug.columna === columna) {
+                    return false;
                 }
-                if(filaDif===1){
-                    if (jugador.fila < fila && this.tablero[jugador.fila][jugador.columna].MuroHori) return false;
-                    if (jugador.fila > fila && this.tablero[fila][columna].MuroHori) return false;
-                }
-                if(ColDif === 1){
-                    if (jugador.columna < columna && this.tablero[jugador.fila][jugador.columna].MuroVert)return false;
-                    if (jugador.columna > columna && this.tablero[fila][columna].MuroVert) return false;
-                }
-                return fila >=0 && fila < 9 && columna >=0 && columna <9;
-            },
-        TeclasFlechas(event){
+            }
+
+            if (filaDif === 1) {
+                if (jugador.fila < fila && this.tablero[jugador.fila][jugador.columna].MuroHori) return false;
+                if (jugador.fila > fila && this.tablero[fila][columna].MuroHori) return false;
+            }
+
+            if (ColDif === 1) {
+                if (jugador.columna < columna && this.tablero[jugador.fila][jugador.columna].MuroVert) return false;
+                if (jugador.columna > columna && this.tablero[fila][columna].MuroVert) return false;
+            }
+
+            return fila >= 0 && fila < 9 && columna >= 0 && columna < 9;
+        },
+
+        TeclasFlechas(event) {
             const MapaKey = {
-                FlechaArriba: 'arriba',
-                FlechaAbajo: 'abajo',
-                FlechaIzq: 'izq',
-                FlechaDer: 'der',
+                ArrowUp: 'up',
+                ArrowDown: 'down',
+                ArrowLeft: 'left',
+                ArrowRight: 'right',
             };
             const direccion = MapaKey[event.key];
-            if(direccion && this.ModoAccion === 'mover'){
-                this.MnjMov(direcion);
+            if (direccion && this.ModoAccion === 'mover') {
+                this.MnjMov(direccion);
             }
         },
-        VerifGanador(jugador){
+        VerifGanador(jugador) {
             return jugador.fila === jugador.MetaFila;
         },
-        cambiarJug(){
-            this.JugActual=this.JugActual===0?1:0;
-            this.msgTurno= `Turno del jugador ${this.currentPlayer + 1}`;
-            this.ModoAccion='mover';
-        },  
-        reiniciarJuego(){
-           this.tablero = this.IniciarTablero();
-           this.jugadores = [
-            {id:1, fila:0, columna:4, Muros:10, MetaFila:8},
-            {id:2, fila:8, columna:4, Muros:10, MetaFila:0}
-            ],
-            this.JugActual= 0;
-            this.Ganador=null;
-            this.msgTurno= 'Turno del jugador 1';
-            this.ModoAccion= 'mover';
-            this.OrientacionMuro= 'horizontal';
+        cambiarJug() {
+            this.JugActual = this.JugActual === 0 ? 1 : 0;
+            this.msgTurno = `Turno del jugador ${this.JugActual + 1}`;
+            this.ModoAccion = 'mover';
         },
-        MuroValido(fila, columna, orientacion){
-                if (orientacion === 'horizontal'){
-                    if(
-                        columna >= 8 || this.tablero[fila][columna].MuroHori || this.tablero[fila][columna + 1].MuroHori
-                    ){
-                        return false;
-                    }
-                    if(
-                        (fila > 0 && this.tablero[fila - 1][columna].MuroVert && this.tablero[fila - 1][col +1].MuroVert) || (fila < 8 && this.tablero[fila + 1][columna].MuroVert && this.tablero[fila + 1][col +1].MuroVert)
-                    ) {
-                        return false;
-                    }
-                } else {
-                    if ( fila >=8 || this.tablero[fila][columna].MuroVert || this.tablero[fila +1][columna].MuroVert)   
-                    {
-                        return false;
-                    }  
+        reiniciarJuego() {
+            this.tablero = this.IniciarTablero();
+            this.jugadores = [
+                { id: 1, fila: 0, columna: 4, Muros: 10, MetaFila: 8 },
+                { id: 2, fila: 8, columna: 4, Muros: 10, MetaFila: 0 }
+            ];
+            this.JugActual = 0;
+            this.Ganador = null;
+            this.msgTurno = 'Turno del jugador 1';
+            this.ModoAccion = 'mover';
+            this.OrientacionMuro = 'horizontal';
+        },
+        MuroValido(fila, columna, orientacion) {
+            if (orientacion === 'horizontal') {
+                if (
+                    columna >= 8 ||
+                    this.tablero[fila][columna].MuroHori || this.tablero[fila][columna + 1].MuroHori
+                ) {
+                    return false;
+                }
+                if (
+                    (fila > 0 && this.tablero[fila - 1][columna].MuroVert && this.tablero[fila - 1][columna + 1].MuroVert) ||
+                    (fila < 8 && this.tablero[fila + 1][columna].MuroVert && this.tablero[fila + 1][columna + 1].MuroVert)
+                ) {
+                    return false;
+                }
+            } else {
+                if (
+                    fila >= 8 ||
+                    this.tablero[fila][columna].MuroVert || this.tablero[fila + 1][columna].MuroVert
+                ) {
+                    return false;
+                }
+                if (
+                    (columna > 0 && this.tablero[fila][columna - 1].MuroHori && this.tablero[fila + 1][columna - 1].MuroHori) ||
+                    (columna < 8 && this.tablero[fila][columna + 1].MuroHori && this.tablero[fila + 1][columna + 1].MuroHori)
+                ) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        CaminoDisponible(jugador) {
+            const direcciones = [
+                { fila: -1, columna: 0 },
+                { fila: 1, columna: 0 },
+                { fila: 0, columna: -1 },
+                { fila: 0, columna: 1 },
+            ];
+
+            const visitado = Array.from({ length: 9 }, () => Array(9).fill(false));
+            const cola = [{ fila: jugador.fila, columna: jugador.columna }];
+            visitado[jugador.fila][jugador.columna] = true;
+
+            while (cola.length > 0) {
+                const { fila, columna } = cola.shift();
+                if (fila === jugador.MetaFila) return true;
+
+                for (const direccion of direcciones) {
+                    const nuevaFila = fila + direccion.fila;
+                    const nuevaCol = columna + direccion.columna;
+
                     if (
-                        (columna > 0 && this.tablero[fila][columna-1].MuroHori && this.tablero[fila + 1][col - 1].MuroHori) || (columna < 8 && this.tablero[fila][columna+1].MuroHori && this.tablero[fila + 1][col + 1].MuroHori)
-                    )   {
-                        return false;
-                    }       
-                }
-                return false;
-            },
-            CaminoDisponible(jugador){
-                const direcciones = [
-                    {fila:-1, columna: 0},
-                    {fila: 1, columna: 0},
-                    {fila: 0, columna:-1},
-                    {fila: 0, columna: 1},
-                ];
-
-                const visitado = Array.from({length: 9}, () => Array(9).fill(false));
-                const cola = [{fila: jugador.fila, columna: jugador.columna}];
-                visitado[jugador.fila][jugador.columna] = true;
-
-                while(cola.length > 0){
-                    const {fila, columna} = cola.shift();
-                    if (fila === jugador.MetaFila) return true;
-
-                    for(const direccion of direcciones) {
-                        const nuevaFila = fila + direccion.fila;
-                        const nuevaCol = columna + direccion.columna;
-
-                        if(
-                            nuevaFila >= 0 && nuevaFila < 9 && nuevaCol >= 0 && nuevaCol < 9 &&
-                            !visitado[nuevaFila][nuevaCol] && this.MovValido({fila, columna}, nuevaFila, nuevaCol)
-                        ) {
-                            visitado[nuevaFila][nuevaCol] = true;
-                            cola.push({ fila: nuevaFila, columna: nuevaCol});
-                        }
+                        nuevaFila >= 0 && nuevaFila < 9 && nuevaCol >= 0 && nuevaCol < 9 &&
+                        !visitado[nuevaFila][nuevaCol] && this.MovValido({ fila, columna }, nuevaFila, nuevaCol)
+                    ) {
+                        visitado[nuevaFila][nuevaCol] = true;
+                        cola.push({ fila: nuevaFila, columna: nuevaCol });
                     }
                 }
-                return false;
-            },
+            }
+            return false;
+        },
+        MnjPonerMuro(fila, columna) {
+            const jugador = this.jugadores[this.JugActual];
+            if (jugador.Muros <= 0) {
+                alert('No te quedan muros :(');
+                return;
+            }
+            if (this.MuroValido(fila, columna, this.OrientacionMuro)) {
+                if (this.OrientacionMuro === 'horizontal') {
+                    this.tablero[fila][columna].MuroHori = true;
+                    this.tablero[fila][columna + 1].MuroHori = true;
+                } else {
+                    this.tablero[fila][columna].MuroVert = true;
+                    this.tablero[fila + 1][columna].MuroVert = true;
+                }
 
-        
-        }
+                if (this.CaminoDisponible(this.jugadores[0]) && this.CaminoDisponible(this.jugadores[1])) {
+                    jugador.Muros -= 1;
+                    this.cambiarJug();
+                    this.LugarMuro = false;
+                } else {
+                    if (this.OrientacionMuro === 'horizontal') {
+                        this.tablero[fila][columna].MuroHori = false;
+                        this.tablero[fila][columna + 1].MuroHori = false;
+                    } else {
+                        this.tablero[fila][columna].MuroVert = false;
+                        this.tablero[fila + 1][columna].MuroVert = false;
+                    }
+                    alert('Ese muro no se puede poner ahí, estás bloqueando el camino de tu amiguito');
+                }
 
-    }
-
+            } else {
+                alert('Ese muro no se puede poner ahí, lo lamentamos mucho');
+            }
+        },
+        MnjClickCelda({ fila, columna }) {
+            if (this.ModoAccion === 'muro') {
+                this.MnjPonerMuro(fila, columna);
+            }
+        },
+        cambiarModoAccion() {
+            this.ModoAccion = this.ModoAccion === 'mover' ? 'muro' : 'mover';
+        },
+        setOrientacionMuro(orientacion) {
+            this.OrientacionMuro = orientacion;
+        },
+    },
+};
 </script>
-<style>
-    .PlantJ{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+
+<style scoped>
+.PlantJ {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 </style>

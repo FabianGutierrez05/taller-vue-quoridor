@@ -12,7 +12,6 @@ export default {
   </div>
 </template>
 
-
 <style scoped>
 .pagina-juego{
   padding: 20px;
