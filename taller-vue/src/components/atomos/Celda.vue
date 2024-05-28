@@ -51,16 +51,16 @@ export default{
 }
 
 .Vmuro::after {
-  content: '';
-  width: 5px;
-  height: 100%;
-  background-color: black;
-  position: absolute;
-  right: 0;
-  top: 0;
+    content: '';
+    width: 8px;
+    height: 100%;
+    background-color: black;
+    position: absolute;
+    right: -5px;
+    top: 0;
 }
 .ContMuro{
-    font-size: 12px;
+    font-size: 0px;
     font-weight: bold;
     color: white;
 }
