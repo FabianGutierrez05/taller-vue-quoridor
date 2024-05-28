@@ -17,7 +17,7 @@ export default{
 };
 </script>
 <template>
-    <div :class="['celda', {'J1': Jugador1, 'J2':Jugador2, 'Vmuro': MuroVert, 'Hmuro':MuroHori}]" @click="ClickCelda">
+    <div :class="['celda', {'celda-J1': Jugador1, 'celda-J2':Jugador2, 'Vmuro': MuroVert, 'Hmuro':MuroHori}]" @click="ClickCelda">
         </div>
         <div v-if="MuroHori && MuroVert" class="ContMuro">+</div>
         <div v-else-if="MuroHori" class="ContMuro">|</div>
@@ -34,17 +34,19 @@ export default{
     justify-content: center;
     align-items: center;   
 }
-.J1{
+.celda-J1{
     background-color: pink;
+    border-radius: 20%;
 }
-.J2{
+.celda-J2{
     background-color: purple;
+    border-radius: 20%;
 }
 .Hmuro::before {
   content: '';
   width: 100%;
   height: 5px;
-  background-color: black;
+  background-color: rgb(52, 0, 136);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -52,11 +54,11 @@ export default{
 
 .Vmuro::after {
     content: '';
-    width: 8px;
+    width: 5px;
     height: 100%;
-    background-color: black;
+    background-color:rgb(52, 0, 136);
     position: absolute;
-    right: -5px;
+    right: 0;
     top: 0;
 }
 .ContMuro{

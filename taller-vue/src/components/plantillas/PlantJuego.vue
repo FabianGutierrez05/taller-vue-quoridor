@@ -2,7 +2,7 @@
     <div class="PlantJ" @keydown="TeclasFlechas" tabindex="0">
         <MsgTurno :mensaje="msgTurno" />
         <TabJuego :tablero="tablero" :jugadores="jugadores" @CeldaClickeada="MnjClickCelda" />
-        
+
         <ControlesMov :MurosActuales="MurosActuales" :ModoAccion="ModoAccion" @mover="MnjMov" @PonerMuro="MnjMuroPos" @reiniciar="reiniciarJuego" @ActivModoAccion="cambiarModoAccion" @setOrientacionMuro="setOrientacionMuro" />
     </div>
 </template>
@@ -11,6 +11,7 @@
 import MsgTurno from '../organismos/MsgTurno.vue';
 import TabJuego from '../organismos/TabJuego.vue';
 import ControlesMov from '../moleculas/ControlesMov.vue';
+
 
 export default {
     components: { MsgTurno, TabJuego, ControlesMov },
@@ -270,5 +271,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #F29544;
 }
 </style>
