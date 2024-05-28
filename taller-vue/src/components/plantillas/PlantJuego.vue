@@ -2,7 +2,7 @@
     <div class="PlantJ" @keydown="TeclasFlechas" tabindex="0">
         <MsgTurno :mensaje="msgTurno" />
         <TabJuego :tablero="tablero" :jugadores="jugadores" @CeldaClickeada="MnjClickCelda" />
-        <ControlesMov :MurosActuales="MurosActuales" :ModoAccion="ModoAccion" @mover="MnjMov" @PonerMuro="MnjMuroPos" @reiniciar="reiniciarJuego" @cambiarModo="cambiarModoAccion" @MuroOrientacion="setOrientacionMuro" />
+        <ControlesMov :MurosActuales="MurosActuales" :ModoAccion="ModoAccion" @mover="MnjMov" @PonerMuro="MnjMuroPos" @reiniciar="reiniciarJuego" @ActivModoAccion="cambiarModoAccion" @setOrientacionMuro="setOrientacionMuro" />
     </div>
 </template>
 

@@ -32,8 +32,9 @@
         :columna="celda.columna"
         :Jugador1="PosJ1(celda.fila, celda.columna)"
         :Jugador2="PosJ2(celda.fila, celda.columna)"
-        :MuroVert="celda.MuroVert"
         :MuroHori="celda.MuroHori"
+        :MuroVert="celda.MuroVert"
+        
         @CeldaClickeada="MnjClickCelda"
         />
     </div>
