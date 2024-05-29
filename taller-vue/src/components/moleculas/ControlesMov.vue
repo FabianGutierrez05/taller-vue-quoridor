@@ -10,13 +10,13 @@ export default{
 
 <template>
     <div class="ControlMov">
-        <Boton @click="$emit('reiniciar')" class="btn-primario">Reiniciar</Boton>
-        <Boton @click="$emit('ActivModoAccion')" class="btn-primario">{{ ModoAccion === 'mover' ? 'Cambiar a Poner  Muro' : 'Cambiar a Moverse'}}</Boton>
+        <Boton @click="$emit('reiniciar')" class="btn btn-primario">Reiniciar</Boton>
+        <Boton @click="$emit('ActivModoAccion')" class="btn btn-primario">{{ ModoAccion === 'mover' ? 'Cambiar a Poner  Muro' : 'Cambiar a Moverse'}}</Boton>
         <div v-if="ModoAccion === 'mover'"></div>
         <div v-if="ModoAccion === 'muro'">
             <p>Selecciona la orientacion del muro:</p>
-            <Boton @click="$emit('setOrientacionMuro', 'horizontal')" class="btn-primario">Horizontal</Boton>
-            <Boton @click="$emit('setOrientacionMuro', 'vertical')" class="btn-primario">Vertical</Boton>
+            <Boton @click="$emit('setOrientacionMuro', 'horizontal')" class="btn btn-primario">Horizontal</Boton>
+            <Boton @click="$emit('setOrientacionMuro', 'vertical')" class="btn btn-primario">Vertical</Boton>
             <p>Muros restantes: {{ MurosActuales }}</p>
         </div>
     </div>
@@ -40,10 +40,10 @@ p{
     justify-content: center;
   align-items: center;
   padding: 20px;
-  min-width: 200px;
-  font-size: 30px;
-  height: 30px;
-  border-radius: 15px;
+  min-width: 100px;
+  font-size: 15px;
+  height: 15px;
+  border-radius: 7px;
   cursor: pointer;
   box-shadow: 0px 0px 5px 5px rgb(0, 0, 0/28%);
   

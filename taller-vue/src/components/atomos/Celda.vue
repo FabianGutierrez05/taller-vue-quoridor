@@ -17,7 +17,7 @@ export default{
 };
 </script>
 <template>
-    <div :class="['celda', {'celda-J1': Jugador1, 'celda-J2':Jugador2, 'Vmuro': MuroVert, 'Hmuro':MuroHori}]" @click="ClickCelda">
+    <div :class="['celda', {'celda celda-J1': Jugador1, 'celda celda-J2':Jugador2, 'Vmuro': MuroVert, 'Hmuro':MuroHori}]" @click="ClickCelda">
         </div>
         <div v-if="MuroHori && MuroVert" class="ContMuro">+</div>
         <div v-else-if="MuroHori" class="ContMuro">|</div>
@@ -42,6 +42,7 @@ export default{
     background-color: rgb(20, 159, 169);
     border-radius: 20%;
 }
+
 .Hmuro::before {
   content: '';
   width: 100%;
